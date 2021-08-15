@@ -63,7 +63,24 @@ app.get("/", (req, res) => {
 // @route: POST /upload
 // @desc: uploads the file to the DB
 app.post("/upload", upload.single("file"), (req, res) => {
-  res.json({ file: req.file });
+  /*  res.json({ file: req.file }); */
+  res.redirect("/");
+});
+
+// @route: GET /files
+// @desc: display all files in JSON
+app.get("/files", (req, res) => {
+  gfs.files.find().toArray((err, files) => {
+    // check if files exist
+    if (!files || files.length === 0) {
+      return res.status(404).json({
+        message: "No files found",
+      });
+    }
+
+    // files exist
+    return res.json(files);
+  });
 });
 
 const port = 5000;

@@ -8,10 +8,11 @@ const multer = require("multer");
 const GridFsStorage = require("gridfs-storage");
 const Grid = require("gridfs-stream");
 const methodOverride = require("method-override");
-const bodyParser = require("body-parser");
 
 // Middleware
+app.use(express.json({ extended: false }));
 app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
 
 app.get("/", (req, res) => {
   res.render("index");

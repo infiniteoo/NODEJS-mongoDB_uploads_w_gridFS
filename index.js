@@ -5,7 +5,7 @@ const path = require("path");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 const multer = require("multer");
-const GridFsStorage = require("gridfs-storage");
+const { GridFsStorage } = require("multer-gridfs-storage");
 const Grid = require("gridfs-stream");
 const methodOverride = require("method-override");
 
@@ -14,15 +14,14 @@ app.use(express.json({ extended: false }));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
 // Mongo URI from environment variable
 const mongoURI = process.env.MONGODB;
 
 // create mongo connection
-const conn = mongoose.createConnection(mongoURI);
+const conn = mongoose.createConnection(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // init gfs
 let gfs;
@@ -54,6 +53,18 @@ const storage = new GridFsStorage({
 });
 
 const upload = multer({ storage });
+
+// @route: GET /
+// @desc: loads the index page form
+app.get("/", (req, res) => {
+  res.render("index");
+});
+
+// @route: POST /upload
+// @desc: uploads the file to the DB
+app.post("/upload", upload.single("file"), (req, res) => {
+  res.json({ file: req.file });
+});
 
 const port = 5000;
 

@@ -10,6 +10,11 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
+    <style>
+      img {
+        width: 100%;
+      }
+    </style>
     <title>MongoDB File Uploads</title>
   </head>
   <body>
@@ -33,6 +38,23 @@
               class="btn btn-primary btn-block"
             />
           </form>
+
+          <hr>
+
+          <% if(files){ %>>
+            <% files.forEach(function(file) { %>
+              <div class="card card-body mb-3">
+                <% if(file.isImage) { %>
+                  <img src="image/<%= file.filename %>" alt="">
+                <% } else { %>
+                  <%= file.filename %>
+                <% } %>
+
+            <% }); %>
+          <% } else { %>
+            <p>No files to show :(</p>
+          
+          <% } %>
         </div>
       </div>
     </div>

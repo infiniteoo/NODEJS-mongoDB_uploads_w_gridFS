@@ -57,7 +57,25 @@ const upload = multer({ storage });
 // @route: GET /
 // @desc: loads the index page form
 app.get("/", (req, res) => {
-  res.render("index");
+  gfs.files.find().toArray((err, files) => {
+    // check if files exist
+    if (!files || files.length === 0) {
+      res.render("index", { files: false });
+    } else {
+      files.map((file) => {
+        if (
+          file.contentType === "image/jpeg" ||
+          file.contentType === "image/png"
+        ) {
+          file.isImage = true;
+        } else {
+          file.isImage = false;
+        }
+      });
+
+      res.render("index", { files: files });
+    }
+  });
 });
 
 // @route: POST /upload
@@ -106,7 +124,7 @@ app.get("/image/:filename", (req, res) => {
       });
     }
     // check if file type is image
-    if (file.contentType === "image/jpeg" || file.contentType === "img/png") {
+    if (file.contentType === "image/jpeg" || file.contentType === "image/png") {
       // read output to browser
       const readstream = gfs.createReadStream(file.filename);
       readstream.pipe(res);

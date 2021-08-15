@@ -41,7 +41,7 @@
 
           <hr>
 
-          <% if(files){ %>>
+          <% if(files){ %>
             <% files.forEach(function(file) { %>
               <div class="card card-body mb-3">
                 <% if(file.isImage) { %>
@@ -49,7 +49,10 @@
                 <% } else { %>
                   <%= file.filename %>
                 <% } %>
-
+              </div>
+              <form method="POST" action="/files/<%= file._id %>?_method=DELETE">
+                <button class="btn btn-danger btn-block mt-4">Delete</button>
+              </form>
             <% }); %>
           <% } else { %>
             <p>No files to show :(</p>

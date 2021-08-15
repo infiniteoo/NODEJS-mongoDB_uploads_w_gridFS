@@ -1,5 +1,5 @@
 {
-  "name": "NODEJS-mongoDB_uploads_w_gridFS",
+  "name": "mongodb_file_uploader",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -22,7 +22,6 @@
     "nodemon": "^2.0.12"
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
